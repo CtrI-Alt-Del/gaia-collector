@@ -1,0 +1,22 @@
+{
+  "name": "gaia-collector",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@types/bun": "latest",
+    "husky": "^9.1.7"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "mongodb": "^6.20.0",
+    "mqtt": "^5.14.1"
+  },
+  "scripts": {
+    "prepare": "husky"
+  }
+}
