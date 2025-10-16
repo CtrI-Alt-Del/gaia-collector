@@ -1,0 +1,140 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+h1 {
+    color: #1e3a8a;
+}
+
+#status {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.status-stopped {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.status-running {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.station-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.station-item label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.station-item label:hover {
+    background-color: #f9fafb;
+}
+
+.params-form .form-group {
+    margin-bottom: 15px;
+}
+
+.params-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.params-form input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#start-btn {
+    background-color: #2563eb;
+    color: white;
+}
+#start-btn:hover:not(:disabled) {
+    background-color: #1d4ed8;
+}
+
+#stop-btn {
+    background-color: #dc2626;
+    color: white;
+}
+#stop-btn:hover:not(:disabled) {
+    background-color: #b91c1c;
+}
+
+.log-output {
+    background-color: #111827;
+    color: #f3f4f6;
+    padding: 15px;
+    border-radius: 5px;
+    height: 200px;
+    overflow-y: auto;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
