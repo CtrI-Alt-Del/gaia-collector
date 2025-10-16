@@ -1,14 +1,14 @@
+import { ENV } from "@/constants/env";
 import { disconnectFromDb } from "@/database";
 import { startDataIngestion } from "@/modules/receive-and-process-data";
 import { disconnectMqttClient } from "@/providers/broker";
-import { env } from "@/providers/env";
 async function main() {
 	console.log("🚀 Initializing application...");
 
 	await startDataIngestion();
 
 	Bun.serve({
-		port: env.PORT,
+		port: ENV.PORT,
 		fetch(req) {
 			const url = new URL(req.url);
 			if (url.pathname === "/health") {
@@ -22,7 +22,7 @@ async function main() {
 
 	console.log(`\n✨ Application is running!`);
 	console.log(`👂 MQTT data ingestion service is active.`);
-	console.log(`✅ HTTP server is listening on http://localhost:${env.PORT}`);
+	console.log(`✅ HTTP server is listening on http://localhost:${ENV.PORT}`);
 	console.log("   Press Ctrl+C to exit.");
 }
 

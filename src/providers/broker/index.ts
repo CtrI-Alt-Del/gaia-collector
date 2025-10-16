@@ -1,4 +1,4 @@
-import { env } from "@/providers/env";
+import { ENV } from "@/constants/env";
 import { connect, type MqttClient } from "mqtt";
 
 let client: MqttClient | null = null;
@@ -9,10 +9,10 @@ export function getMqttClient(): MqttClient {
 	}
 
 	const options = {
-		host: env.MQTT_BROKER_URL,
-		port: env.MQTT_PORT,
-		username: env.MQTT_USERNAME,
-		password: env.MQTT_PASSWORD,
+		host: ENV.MQTT_BROKER_URL,
+		port: ENV.MQTT_PORT,
+		username: ENV.MQTT_USERNAME,
+		password: ENV.MQTT_PASSWORD,
 		protocol: "mqtts" as const,
 	};
 

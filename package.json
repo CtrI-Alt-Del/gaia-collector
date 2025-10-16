@@ -19,7 +19,6 @@
     "zod": "^4.1.12"
   },
   "scripts": {
-    "prepare": "husky",
     "dev": "bun run src/index.ts",
     "test": "bun run test-generator/index.ts"
   }

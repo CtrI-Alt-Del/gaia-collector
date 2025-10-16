@@ -1,5 +1,5 @@
+import { ENV } from "@/constants/env";
 import { MongoClient, type Db } from "mongodb";
-import { env } from "../providers/env";
 let client: MongoClient | null = null;
 let db: Db | null = null;
 
@@ -10,7 +10,7 @@ export async function getDb(): Promise<Db> {
 
 	if (!client) {
 		console.log("Creating new MongoDB client...");
-		client = new MongoClient(env.MONGODB_URI);
+		client = new MongoClient(ENV.MONGODB_URI);
 	}
 
 	try {

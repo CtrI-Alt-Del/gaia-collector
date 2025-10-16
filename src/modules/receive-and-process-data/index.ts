@@ -1,8 +1,8 @@
+import { ENV } from "@/constants/env";
 import { getDb } from "@/database";
 import { getMqttClient } from "@/providers/broker";
-import { env } from "@/providers/env";
 import type { Collection } from "mongodb";
-const MQTT_TOPIC = env.MQTT_TOPIC;
+const MQTT_TOPIC = ENV.MQTT_TOPIC;
 const MONGO_COLLECTION = "sensor_data";
 async function onMessageReceived(
 	topic: string,

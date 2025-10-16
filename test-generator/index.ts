@@ -1,5 +1,5 @@
-import { env } from "@/providers/env";
-import mqtt, { connect } from "mqtt";
+import { ENV } from "@/constants/env";
+import  { connect } from "mqtt";
 import path from "node:path";
 
 console.log("🚀 Iniciando gerador de teste");
@@ -7,10 +7,10 @@ console.log("🚀 Iniciando gerador de teste");
 let simulationInterval: Timer | null = null;
 
 const options = {
-	host: env.MQTT_BROKER_URL,
-	port: env.MQTT_PORT,
-	username: env.MQTT_USERNAME,
-	password: env.MQTT_PASSWORD,
+	host: ENV.MQTT_BROKER_URL,
+	port: ENV.MQTT_PORT,
+	username: ENV.MQTT_USERNAME,
+	password: ENV.MQTT_PASSWORD,
 	protocol: "mqtts" as const,
 };
 
