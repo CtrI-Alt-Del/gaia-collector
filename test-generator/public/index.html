@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Testes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gerador de Testes</h1>
+            <p id="status" class="status-stopped">Status: Parado</p>
+        </header>
+
+        <main>
+            <div class="card">
+                <h2>1. Selecione as Estações</h2>
+                <div id="station-list" class="station-list">
+                    <p>Carregando estações...</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>2. Parâmetros do Payload</h2>
+                <form id="params-form" class="params-form">
+                    <div class="form-group">
+                        <label for="plu">Chuva (plu)</label>
+                        <input type="number" id="plu" value="24" required>
+                    </div>
+                     </form>
+            </div>
+
+            <div class="controls">
+                <button id="start-btn" disabled>▶️ Iniciar Simulação</button>
+                <button id="stop-btn" disabled>⏹️ Parar Simulação</button>
+            </div>
+
+            <div class="card">
+                <h2>Log de Publicação</h2>
+                <pre id="log-output" class="log-output"></pre>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
