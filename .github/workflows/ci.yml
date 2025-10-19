@@ -1,0 +1,94 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+      - production
+  pull_request:
+    branches:
+      - main
+      - production
+
+jobs:
+  # Validate if the branch is allowed to be merged or not
+  validate-branches:
+    name: "Validate Branch Rules"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: "Check Main -> Production Merge"
+        if: github.base_ref == 'production' && github.head_ref != 'main'
+        run: |
+          echo "❌ ERRO: Pull requests para 'production' só podem ser feitos a partir da branch 'main'."
+          echo "Este PR está vindo da branch '${{ github.head_ref }}', o que não é permitido."
+          exit 1
+
+      - name: "Block Production -> Main Merge"
+        if: github.base_ref == 'main' && github.head_ref == 'production'
+        run: |
+          echo "❌ ERRO: A branch 'production' não pode ser mesclada de volta na 'main'."
+          echo "Hotfixes devem ser feitos em uma branch separada e mesclados tanto em 'main' quanto em 'production'."
+          exit 1
+
+      - name: "Approve valid merge"
+        if: (github.base_ref == 'production' && github.head_ref == 'main') || (github.base_ref == 'main' && github.head_ref != 'production')
+        run: echo "\o/ tudo correto, pode prosseguir!"
+
+  build:
+    name: "Build Application"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate --schema=src/infra/database/prisma/schema.prisma
+
+      - name: Build application
+        run: npm run build
+
+  type-check:
+    name: "Type Check"
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Type Check
+        run: npm run type-check
