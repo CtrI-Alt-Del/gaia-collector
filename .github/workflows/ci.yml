@@ -33,7 +33,7 @@ jobs:
 
       - name: "Approve valid merge"
         if: (github.base_ref == 'production' && github.head_ref == 'main') || (github.base_ref == 'main' && github.head_ref != 'production')
-        run: echo "\o/ tudo correto, pode prosseguir!"
+        run: echo "Tudo correto, pode prosseguir!"
 
   build:
     name: "Build Application"
@@ -43,52 +43,36 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 20
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Generate Prisma client
-        run: npx prisma generate --schema=src/infra/database/prisma/schema.prisma
+        run: bunx prisma generate --schema=src/infra/database/prisma/schema.prisma
 
       - name: Build application
-        run: npm run build
+        run: bun run build
 
   type-check:
     name: "Type Check"
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 5
     needs: build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 20
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Run Type Check
-        run: npm run type-check
+        run: bun run type-check
