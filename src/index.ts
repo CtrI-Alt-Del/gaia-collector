@@ -22,7 +22,7 @@ async function main() {
 
 	console.log(`\n✨ Application is running!`);
 	console.log(`👂 MQTT data ingestion service is active.`);
-	console.log(`✅ HTTP server is listening on http://localhost:${ENV.PORT}`);
+	console.log(`✅ HTTP server is listening on port:${ENV.PORT}`);
 	console.log("   Press Ctrl+C to exit.");
 }
 
