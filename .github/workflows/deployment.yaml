@@ -12,7 +12,6 @@ permissions:
   contents: read
 
 env:
-  AWS_REGION: us-east-1
   ECR_REPOSITORY: ${{ inputs.environment }}-gaia-collector-ecr-repository
   ECS_CLUSTER_NAME: ${{ inputs.environment }}-gaia-collector-cluster
   ECS_SERVICE_NAME: ${{ inputs.environment }}-gaia-collector-service
@@ -35,7 +34,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::632325908215:role/gaia-collector-role
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to AWS ECR
