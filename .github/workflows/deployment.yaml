@@ -1,0 +1,85 @@
+name: Continuous Deployment
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: ${{ inputs.environment }}-gaia-collector-ecr-repository
+  ECS_CLUSTER_NAME: ${{ inputs.environment }}-gaia-collector-cluster
+  ECS_SERVICE_NAME: ${{ inputs.environment }}-gaia-collector-service
+  ECS_TASK_FAMILY: ${{ inputs.environment }}-gaia-collector-task
+  CONTAINER_NAME: ${{ inputs.environment }}-gaia-collector
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate Tag
+        id: generate_tag
+        run: |
+          SHA=$(echo $GITHUB_SHA | head -c 7)
+          echo "sha=$SHA" >> $GITHUB_OUTPUT
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to AWS ECR
+        id: login_ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image to ECR
+        id: build_push_image
+        env:
+          REGISTRY: ${{ steps.login_ecr.outputs.registry }}
+          TAG: ${{ steps.generate_tag.outputs.sha }}
+        run: |
+          docker build -t $REGISTRY/$ECR_REPOSITORY:$TAG .
+          docker tag $REGISTRY/$ECR_REPOSITORY:$TAG $REGISTRY/$ECR_REPOSITORY:latest
+          docker push --all-tags $REGISTRY/$ECR_REPOSITORY
+          echo "image_uri=$REGISTRY/$ECR_REPOSITORY:$TAG" >> $GITHUB_OUTPUT
+
+      - name: Update ECS task definition and service
+        run: |
+          echo "Iniciando deploy para o cluster ${{ env.ECS_CLUSTER_NAME }}"
+
+          # 1. Baixa a definição da task ATIVA
+          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_FAMILY }} --query taskDefinition)
+
+          # 2. Prepara o novo payload da task definition
+          NEW_TASK_DEF_PAYLOAD=$(echo $TASK_DEFINITION | \
+            jq --arg IMAGE_URI "${{ steps.build_push_image.outputs.image_uri }}" \
+            '
+              ( .containerDefinitions[] | select(.name == "${{ env.CONTAINER_NAME }}") ).image = $IMAGE_URI |
+              del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .deregisteredAt)
+            '
+          )
+
+          # 3. Registra a nova definição de tarefa
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json "$NEW_TASK_DEF_PAYLOAD" \
+            --query "taskDefinition.taskDefinitionArn" --output text)
+
+          echo "Nova revisão da Task Definition registrada: $NEW_TASK_DEF_ARN"
+
+          # 4. Atualiza o serviço para usar a nova revisão
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER_NAME }} \
+            --service ${{ env.ECS_SERVICE_NAME }} \
+            --task-definition $NEW_TASK_DEF_ARN
+
+          echo "Deploy solicitado com sucesso!"
