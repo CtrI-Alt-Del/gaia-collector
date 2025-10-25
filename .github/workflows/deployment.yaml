@@ -15,7 +15,7 @@ env:
   CONTAINER_NAME: ${{ inputs.environment }}-gaia-collector
 
 jobs:
-  deploy:
+  deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

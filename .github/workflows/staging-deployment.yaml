@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  staging:
     uses: ./.github/workflows/deployment.yaml
     with:
       environment: dev

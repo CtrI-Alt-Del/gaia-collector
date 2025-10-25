@@ -8,9 +8,8 @@ export const envSchema = z.object({
 	MQTT_PASSWORD: z.string().min(1, { message: "MQTT_PASSWORD is required." }),
 	MQTT_TOPIC: z.string().min(1, { message: "MQTT_TOPIC is required." }),
 	MQTT_PORT: z.coerce.number().int().positive().default(1883),
-	MONGODB_URI: z.string({ message: "DATABASE_URL must be a valid URL." }),
+	MONGO_URI: z.string({ message: "DATABASE_URL must be a valid URL." }),
 	PORT: z.coerce.number().int().positive().default(4444),
-	CA_CERT_PATH: z.string().min(1, { message: "CA_CERT_PATH is required." }),
 });
 
 export type Env = z.infer<typeof envSchema>;
