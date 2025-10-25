@@ -7,10 +7,6 @@ on:
         type: string
         required: true
 
-permissions:
-  id-token: write
-  contents: read
-
 env:
   ECR_REPOSITORY: ${{ inputs.environment }}-gaia-collector-ecr-repository
   ECS_CLUSTER_NAME: ${{ inputs.environment }}-gaia-cluster
