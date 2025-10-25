@@ -1,4 +1,4 @@
-name: Continuous Deployment
+name: Deployment
 
 on:
   workflow_call:
@@ -13,7 +13,7 @@ permissions:
 
 env:
   ECR_REPOSITORY: ${{ inputs.environment }}-gaia-collector-ecr-repository
-  ECS_CLUSTER_NAME: ${{ inputs.environment }}-gaia-collector-cluster
+  ECS_CLUSTER_NAME: ${{ inputs.environment }}-gaia-cluster
   ECS_SERVICE_NAME: ${{ inputs.environment }}-gaia-collector-service
   ECS_TASK_FAMILY: ${{ inputs.environment }}-gaia-collector-task
   CONTAINER_NAME: ${{ inputs.environment }}-gaia-collector
