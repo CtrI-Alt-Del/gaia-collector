@@ -1,4 +1,4 @@
-name: Dev Deployment
+name: Staging Deployment
 
 on:
   pull_request:
