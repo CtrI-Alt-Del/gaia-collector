@@ -11,12 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
 	function connectWebSocket() {
 		const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
 		ws = new WebSocket(`${wsProtocol}//${window.location.host}/ws`);
-    console.log(`${wsProtocol}//${window.location.host}`);
+		console.log(`${wsProtocol}//${window.location.host}`);
 
 		ws.onopen = () => {
 			console.log("Conexão WebSocket aberta.");
 			updateStatus("Conectado e pronto para iniciar.");
-			startBtn.disabled = false; 
+			startBtn.disabled = false;
 		};
 
 		ws.onmessage = (event) => {
@@ -35,16 +35,16 @@ document.addEventListener("DOMContentLoaded", () => {
 				"Conexão WebSocket fechada. Tentando reconectar em 3 segundos...",
 			);
 			updateStatus("Desconectado. Tentando reconectar...", true);
-			startBtn.disabled = true; 
-			stopBtn.disabled = true; 
+			startBtn.disabled = true;
+			stopBtn.disabled = true;
 			setTimeout(connectWebSocket, 3000);
 		};
 
 		ws.onerror = (error) => {
 			console.error("Erro no WebSocket:", error);
 			updateStatus("Erro na conexão.", true);
-			startBtn.disabled = true; 
-			stopBtn.disabled = true; 
+			startBtn.disabled = true;
+			stopBtn.disabled = true;
 		};
 	}
 
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	async function fetchStations() {
 		try {
-			const response = await fetch("http://localhost:3333/telemetry/stations");
+			const response = await fetch("http://localhost:3333/telemetry/stations?pageSize=9");
 			const body = await response.json();
 			const stations = body.items;
 
