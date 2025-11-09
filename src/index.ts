@@ -62,8 +62,14 @@ async function gracefulShutdown() {
   process.exit(0)
 }
 
-process.on('SIGINT', gracefulShutdown)
-process.on('SIGTERM', gracefulShutdown)
+process.on('SIGINT', (SIGINT) => {
+  console.log('SIGINT', SIGINT)
+  gracefulShutdown()
+})
+process.on('SIGTERM', (SIGTERM) => {
+  console.log('SIGTERM', SIGTERM)
+  gracefulShutdown()
+})
 
 main().catch((error) => {
   console.error('💥 Unhandled fatal error during application startup:', error)
