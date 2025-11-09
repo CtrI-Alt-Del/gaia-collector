@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	async function fetchStations() {
 		try {
-			const response = await fetch("http://localhost:3333/telemetry/stations?pageSize=9");
+			const response = await fetch("/stations?pageSize=9");
 			const body = await response.json();
 			const stations = body.items;
 
