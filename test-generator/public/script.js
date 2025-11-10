@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const stationListDiv = document.getElementById("station-list");
 	const startBtn = document.getElementById("start-btn");
 	const stopBtn = document.getElementById("stop-btn");
+	const selectAllBtn = document.getElementById("select-all-btn");
 	const logOutput = document.getElementById("log-output");
 	const statusDiv = document.getElementById("status");
 	const pluInput = document.getElementById("plu");
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			updateStatus("Desconectado. Tentando reconectar...", true);
 			startBtn.disabled = true;
 			stopBtn.disabled = true;
-			setTimeout(connectWebSocket, 3000);
+			setTimeout(connectWebSocket, 1000 * 60);
 		};
 
 		ws.onerror = (error) => {
@@ -63,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	async function fetchStations() {
 		try {
-			const response = await fetch("/stations?pageSize=9");
+			const response = await fetch("/stations?pageSize=101");
 			const body = await response.json();
 			const stations = body.items;
 
@@ -79,12 +80,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
 				stationListDiv.appendChild(div);
 			});
+
+			selectAllBtn.disabled = stations.length === 0;
 		} catch (error) {
 			stationListDiv.innerHTML =
 				'<p style="color: red;">Erro ao carregar estações.</p>';
+			selectAllBtn.disabled = true;
 			console.error("Erro:", error);
 		}
 	}
+
+	selectAllBtn.addEventListener("click", () => {
+		const checkboxes = document.querySelectorAll('input[name="station"]');
+		if (checkboxes.length === 0) {
+			return;
+		}
+
+		checkboxes.forEach((checkbox) => {
+			checkbox.checked = true;
+		});
+	});
 
 	startBtn.addEventListener("click", () => {
 		const selectedStations = Array.from(
