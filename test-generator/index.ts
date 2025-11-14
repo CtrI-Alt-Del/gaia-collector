@@ -28,6 +28,8 @@ client.on('error', (err) => {
 Bun.serve({
   port: 4445,
   async fetch(req, server) {
+    console.log(`✅ Conetado ao Gaia Server em: ${ENV.GAIA_SERVER_URL}`)
+
     const url = new URL(req.url)
     if (url.pathname === '/ws') {
       const success = server.upgrade(req)
@@ -37,6 +39,29 @@ Bun.serve({
       return new Response('Falha ao fazer upgrade para WebSocket', {
         status: 500,
       })
+    }
+
+    if (url.pathname === '/stations' && req.method === 'GET') {
+      const upstreamUrl = new URL(`${ENV.GAIA_SERVER_URL}/telemetry/stations`)
+      upstreamUrl.search = url.search
+
+      try {
+        const response = await fetch(upstreamUrl)
+        const body = await response.text()
+
+        return new Response(body, {
+          status: response.status,
+          headers: {
+            'content-type': response.headers.get('content-type') ?? 'application/json',
+          },
+        })
+      } catch (error) {
+        console.error('❌ Erro ao buscar estações:', error)
+        return new Response(JSON.stringify({ message: 'Erro ao buscar estações.' }), {
+          status: 500,
+          headers: { 'content-type': 'application/json' },
+        })
+      }
     }
 
     if (url.pathname === '/') {

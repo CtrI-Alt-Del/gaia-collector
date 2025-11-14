@@ -49,6 +49,15 @@ h1 {
     margin-bottom: 20px;
 }
 
+.card-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
 .station-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -124,6 +133,16 @@ button:disabled {
 }
 #stop-btn:hover:not(:disabled) {
     background-color: #b91c1c;
+}
+
+#select-all-btn {
+    background-color: #059669;
+    color: white;
+    padding: 10px 16px;
+    font-size: 14px;
+}
+#select-all-btn:hover:not(:disabled) {
+    background-color: #047857;
 }
 
 .log-output {
