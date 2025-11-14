@@ -15,7 +15,6 @@ async function onMessageReceived(topic: string, payload: Buffer): Promise<void> 
 
     const documentToInsert = {
       ...data,
-      receivedAt: new Date(),
       topic: topic,
     }
 
