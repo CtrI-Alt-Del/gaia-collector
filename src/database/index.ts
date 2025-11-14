@@ -10,9 +10,8 @@ export async function getDb(): Promise<Db> {
 
   if (!client) {
     console.log('Creating new MongoDB client...')
-    client = new MongoClient(
-      'mongodb+srv://dev-gaia-mongo-database:D5ZPuheVYS4ds8KN@dev-gaia-cluester.q0oywa5.mongodb.net/?retryWrites=true&w=majority&appName=dev-gaia-cluester',
-    )
+    console.log(ENV.MONGO_URI)
+    client = new MongoClient(ENV.MONGO_URI)
   }
 
   try {

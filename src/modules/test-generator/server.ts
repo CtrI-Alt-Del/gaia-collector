@@ -74,6 +74,7 @@ export async function serveTestGeneratorAsset(
 }
 
 export async function proxyStationsRequest(url: URL): Promise<Response> {
+  console.log(`${ENV.GAIA_SERVER_URL}/telemetry/stations`)
   const upstreamUrl = new URL(`${ENV.GAIA_SERVER_URL}/telemetry/stations`)
   upstreamUrl.search = url.search
 
