@@ -12,8 +12,6 @@ const env = {
   PORT: process.env.PORT,
 }
 
-console.log(env)
-
 const parsedEnv = envSchema.safeParse(env)
 
 if (!parsedEnv.success) {

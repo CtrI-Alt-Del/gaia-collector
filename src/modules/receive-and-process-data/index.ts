@@ -21,7 +21,6 @@ async function onMessageReceived(topic: string, payload: Buffer): Promise<void> 
     const db = await getDb()
     const collection: Collection = db.collection(MONGO_COLLECTION)
 
-    console.log(documentToInsert)
     const result = await collection.insertOne(documentToInsert)
     console.log(
       `✅ Data inserted into '${MONGO_COLLECTION}' with ID: ${result.insertedId}`,

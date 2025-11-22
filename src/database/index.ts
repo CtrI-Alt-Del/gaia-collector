@@ -10,7 +10,6 @@ export async function getDb(): Promise<Db> {
 
   if (!client) {
     console.log('Creating new MongoDB client...')
-    console.log(ENV.MONGO_URI)
     client = new MongoClient(ENV.MONGO_URI)
   }
 
