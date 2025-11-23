@@ -157,3 +157,56 @@ button:disabled {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
+
+/* Estilos para parâmetros dinâmicos */
+.form-group-inline {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.param-key, .param-value {
+    flex: 1;
+}
+
+.remove-param-btn {
+    background-color: #ef4444;
+    color: white;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+.remove-param-btn:hover:not(:disabled) {
+    background-color: #dc2626;
+}
+
+.secondary-btn {
+    background-color: #6b7280;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background-color: #4b5563;
+}
+
+.icon-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.add-row-btn {
+    background-color: #10b981; /* Verde */
+}
+
+.add-row-btn:hover {
+    background-color: #059669;
+}
