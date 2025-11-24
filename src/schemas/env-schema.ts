@@ -1,15 +1,16 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 export const envSchema = z.object({
-	MQTT_BROKER_URL: z.string({
-		message: "MQTT_BROKER_URL must be a valid URL.",
-	}),
-	MQTT_USERNAME: z.string().min(1, { message: "MQTT_USERNAME is required." }),
-	MQTT_PASSWORD: z.string().min(1, { message: "MQTT_PASSWORD is required." }),
-	MQTT_TOPIC: z.string().min(1, { message: "MQTT_TOPIC is required." }),
-	MQTT_PORT: z.coerce.number().int().positive().default(1883),
-	MONGO_URI: z.string({ message: "DATABASE_URL must be a valid URL." }),
-	PORT: z.coerce.number().int().positive().default(4444),
-});
+  MQTT_BROKER_URL: z.string({
+    message: 'MQTT_BROKER_URL must be a valid URL.',
+  }),
+  MQTT_USERNAME: z.string().min(1, { message: 'MQTT_USERNAME is required.' }),
+  MQTT_PASSWORD: z.string().min(1, { message: 'MQTT_PASSWORD is required.' }),
+  MQTT_TOPIC: z.string().min(1, { message: 'MQTT_TOPIC is required.' }),
+  MQTT_PORT: z.coerce.number().int().positive().default(1883),
+  MONGO_URI: z.url({ message: 'DATABASE_URL must be a valid URL.' }),
+  GAIA_SERVER_URL: z.url({ message: 'GAIA_SERVER_URL must be a valid URL.' }),
+  PORT: z.coerce.number().int().positive().default(4444),
+})
 
-export type Env = z.infer<typeof envSchema>;
+export type Env = z.infer<typeof envSchema>

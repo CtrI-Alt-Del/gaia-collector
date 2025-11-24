@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador de Testes</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -15,7 +17,10 @@
 
         <main>
             <div class="card">
-                <h2>1. Selecione as Estações</h2>
+                <div class="card-header">
+                    <h2>1. Selecione as Estações</h2>
+                    <button id="select-all-btn" type="button" disabled>Selecionar todas</button>
+                </div>
                 <div id="station-list" class="station-list">
                     <p>Carregando estações...</p>
                 </div>
@@ -24,11 +29,10 @@
             <div class="card">
                 <h2>2. Parâmetros do Payload</h2>
                 <form id="params-form" class="params-form">
-                    <div class="form-group">
-                        <label for="plu">Chuva (plu)</label>
-                        <input type="number" id="plu" value="24" required>
+                    <div id="dynamic-params-container">
+                        <!-- Campos dinâmicos serão inseridos aqui via JS -->
                     </div>
-                     </form>
+                </form>
             </div>
 
             <div class="controls">
@@ -44,4 +48,5 @@
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
